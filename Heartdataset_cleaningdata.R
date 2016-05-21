@@ -13,10 +13,10 @@ library(tree)
 
 
 #Import 4 datasets#
-processed.cleveland <- read.csv("D:/KI study/VT16 5HI009 Projects in health informatics - from idea to specification/Data mining DSV/data file/processed.cleveland.data", header=FALSE)
-processed.hungarian <- read.csv("D:/KI study/VT16 5HI009 Projects in health informatics - from idea to specification/Data mining DSV/data file/processed.hungarian.data", header=FALSE)
-processed.switzerland <- read.csv("D:/KI study/VT16 5HI009 Projects in health informatics - from idea to specification/Data mining DSV/data file/processed.switzerland.data", header=FALSE)
-processed.va <- read.csv("D:/KI study/VT16 5HI009 Projects in health informatics - from idea to specification/Data mining DSV/data file/processed.va.data", header=FALSE)
+processed.cleveland <- read.csv("path", header=FALSE)
+processed.hungarian <- read.csv("path", header=FALSE)
+processed.switzerland <- read.csv("path", header=FALSE)
+processed.va <- read.csv("path", header=FALSE)
 #combine 4 datasets into one data tool#
 Total_data<-rbind(processed.cleveland,processed.hungarian,processed.switzerland,processed.va)
 
