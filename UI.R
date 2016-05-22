@@ -15,11 +15,12 @@ shinyUI(fluidPage("Banna Ltd.",
                           )),
                 numericInput("trestbps","Resting blood pressure(mmHg)"," "),
                 numericInput("chol","Serum cholestoral in mg/dl"," "),
+              radioButtons("fbs","fasting blood sugar > 120 mg/dl",choices = c("Yes"= 1,"No"=0),""),
               radioButtons("restecg", "Resting electrocardiographic results",choices = c( "normal"="1",
                                                                                    " ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV"="2", 
                                                                                   "showing probable or definite left ventricular hypertrophy by Estes' criteria"="3"),""),
      
-              radioButtons("fbs","fasting blood sugar > 120 mg/dl",choices = c("Yes"= 1,"No"=0),""),
+              
               numericInput("thalach","maximum heart rate achieved",""),
               radioButtons("exang" ,"exercise induced angina" ,choices = c("Yes"=1,"No" = 0),""),
               numericInput("oldpeak"," ST depression induced by exercise relative to rest"," "),
@@ -34,11 +35,10 @@ shinyUI(fluidPage("Banna Ltd.",
     
   mainPanel(
     tabsetPanel(
+
+      tabPanel("Text", h3(tableOutput("text"))),
       tabPanel("Plot", plotOutput("plot")), 
-      tabPanel("Summary", verbatimTextOutput("summary")), 
-      tabPanel("Table", tableOutput("input_result")),
-      tabPanel("Text", tableOutput("text"))
-      
+      tabPanel("Table", tableOutput("input_result"))
     )
 ))))
 )
