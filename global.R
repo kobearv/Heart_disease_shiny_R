@@ -61,17 +61,20 @@ mahal=mahalanobis(Final_data[,-c(12)],colMeans(Final_data[,-c(12)]),cov(Final_da
 cutoff=qchisq(.999,ncol(Final_data[,-c(12)]))
 Final_data2=Final_data[mahal<cutoff,]
 
-#Visualize data
+#Split the dataset
 inTrain<-createDataPartition(y=Final_data2$num,p=0.7,list=F)
 training<-Final_data2[inTrain,]
 testing<-Final_data2[-inTrain,]
 dim(training);dim(testing)
+
+#View the data
 featurePlot(x=training[,c("age","cp","trestbps","chol","thalach","oldpeak")],
             y=training$num,plot = "pairs")
-#Cross validation set#            
-set.seed(323)
-folds<-createFolds(y=Final_data2$num,k=10,list=T,returnTrain = T)
-sapply(folds, length)
+
+#Cross validation set(do it in the model)        
+#set.seed(323)
+#folds<-createFolds(y=Final_data2$num,k=10,list=T,returnTrain = T)
+#sapply(folds, length)
 
 #classifier#
 model_rf<-train(num~.,data=training,method="rf",trControl=trainControl(method="cv"),number=10)
