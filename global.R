@@ -47,6 +47,8 @@ ds$num <- factor(ds$num, levels = c(0,1), labels = c("negative", "positive"))
 
 
 #Deal with missing value#
+#Delete NA>50%
+#Replace NA<50% by using mice
 Total_data_clean<-ds[,-c(12,13)]
 percentmiss=function(x){
   sum(is.na(x))/length(x)*100
@@ -54,6 +56,11 @@ percentmiss=function(x){
 replace=mice(Total_data_clean)
 Final_data=complete(replace)
 #Visualize data
+
+
+#View the data
+featurePlot(x=training[,c("age","cp","trestbps","chol","thalach","oldpeak")],
+            y=training$num,plot = "pairs")
 
 #Deal with outliers#
 Final_data[,-c(12)]
@@ -67,11 +74,8 @@ training<-Final_data2[inTrain,]
 testing<-Final_data2[-inTrain,]
 dim(training);dim(testing)
 
-#View the data
-featurePlot(x=training[,c("age","cp","trestbps","chol","thalach","oldpeak")],
-            y=training$num,plot = "pairs")
 
-#Cross validation set(do it in the model)        
+#Cross validation set(do it in the model)     (just a try)   
 #set.seed(323)
 #folds<-createFolds(y=Final_data2$num,k=10,list=T,returnTrain = T)
 #sapply(folds, length)
