@@ -69,6 +69,7 @@ cutoff=qchisq(.999,ncol(Final_data[,-c(12)]))
 Final_data2=Final_data[mahal<cutoff,]
 
 #Split the dataset
+set.seed(323)
 inTrain<-createDataPartition(y=Final_data2$num,p=0.7,list=F)
 training<-Final_data2[inTrain,]
 testing<-Final_data2[-inTrain,]
