@@ -7,6 +7,8 @@ shinyUI(fluidPage("Banna Ltd.",
   titlePanel(h1("Heart Disease Prediction System")),
   sidebarLayout(position="left",
                 
+                
+# Entry variables
      sidebarPanel(h3("Entry variables"),
                numericInput("age","Enter the patient's age","",min = 0,max = 100),
     
@@ -32,6 +34,7 @@ shinyUI(fluidPage("Banna Ltd.",
 
 
   ),
+  #Display results
     
   mainPanel(
     tabsetPanel(
