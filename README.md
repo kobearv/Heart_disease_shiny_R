@@ -1,2 +1,2 @@
 # Heart_disease_shiny_R for dsv course
- heart disease prediction
+# This app is for heart disease prediction
