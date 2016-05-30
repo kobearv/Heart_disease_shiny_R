@@ -17,7 +17,7 @@ processed.cleveland <- read.csv("path", header=FALSE)
 processed.hungarian <- read.csv("path", header=FALSE)
 processed.switzerland <- read.csv("path", header=FALSE)
 processed.va <- read.csv("path", header=FALSE)
-#combine 4 datasets into one data tool#
+#combine 4 datasets into one data pool#
 Total_data<-rbind(processed.cleveland,processed.hungarian,processed.switzerland,processed.va)
 
 #replace ? to NA#
