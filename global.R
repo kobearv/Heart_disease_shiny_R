@@ -62,11 +62,6 @@ Final_data=complete(replace)
 featurePlot(x=training[,c("age","cp","trestbps","chol","thalach","oldpeak")],
             y=training$num,plot = "pairs")
 
-#Deal with outliers#
-Final_data[,-c(12)]
-mahal=mahalanobis(Final_data[,-c(12)],colMeans(Final_data[,-c(12)]),cov(Final_data[,-c(12)],use = "pairwise.complete.obs"))
-cutoff=qchisq(.999,ncol(Final_data[,-c(12)]))
-Final_data2=Final_data[mahal<cutoff,]
 
 #Split the dataset
 set.seed(323)
@@ -74,6 +69,12 @@ inTrain<-createDataPartition(y=Final_data2$num,p=0.7,list=F)
 training<-Final_data2[inTrain,]
 testing<-Final_data2[-inTrain,]
 dim(training);dim(testing)
+
+#Deal with outliers#
+training[,-c(12)]
+mahal=mahalanobis(training[,-c(12)],colMeans(training[,-c(12)]),cov(training[,-c(12)],use = "pairwise.complete.obs"))
+cutoff=qchisq(.999,ncol(training[,-c(12)]))
+training=training[mahal<cutoff,]
 
 
 #Cross validation set(do it in the model)     (just a try)   
