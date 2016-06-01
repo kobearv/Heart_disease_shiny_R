@@ -91,6 +91,10 @@ model_tree1<-tree(num~.,data=training)
 model_knn <- train(num ~., method = "knn", data = training,tuneLength = 10,  tuneGrid=data.frame(k=1:5),
                            trControl = trainControl(
                              method = "cv"))
+# accuracy improved after increase the k and preProcess "pca" (signal extraction (11), centered (11), scaled (11) )
+model_knn <- train(num ~., method = "knn", preProcess="pca",data = training,tuneLength = 10,  tuneGrid=data.frame(k=5:25),
+                   trControl = trainControl(
+                     method = "cv"))
 
 #testing data set prediction
 
