@@ -1,0 +1,92 @@
+---
+title: "Practicle machine learning Final Assignment "
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data
+The training data for this project are available here:
+[link]https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv
+The test data are available here:
+[link]https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv
+The data for this project come from this source: [link]http://groupware.les.inf.puc-rio.br/har. If you use the document you create for this class for any purpose please cite them as they have been very generous in allowing their data to be used for this kind of assignment.
+
+
+##What you should submit
+The goal of your project is to predict the manner in which they did the exercise. This is the "classe" variable in the training set. You may use any of the other variables to predict with. You should create a report describing how you built your model, how you used cross validation, what you think the expected out of sample error is, and why you made the choices you did. You will also use your prediction model to predict 20 different test cases.
+
+### Packages
+
+```{r library}
+# require package caret, rattle
+library(caret)
+library(rattle)	
+```
+
+### Get data and clean data
+
+```{r get data}
+raw_training<-read.csv('https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv',na.strings=c("NA","#DIV/0!", ""))
+raw_testing<-read.csv('https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv',na.strings=c("NA","#DIV/0!", ""))
+set.seed(323)
+## Remove NA
+train<-raw_training[,colSums(is.na(raw_training)) == 0]
+test <-raw_testing[,colSums(is.na(raw_testing)) == 0]
+
+## Not every variable is predictors, delete those irrevelent
+train_final<-train[,-c(1:7)]
+test_final<-test[,-c(1:7)]
+
+## Subset the data for evaluate the performance of different classifiers
+division<-createDataPartition(y=train_final$classe, p=0.70, list=FALSE)
+subtrain<-train_final[division,]
+validation<-train_final[-division,]
+dim(subtrain)
+dim(validation)
+dim(test)
+
+```
+## Different classifiers by different methods
+1. By using the rpart, treebag and rf methods in caret packages
+2. Compare their performance
+3. Majorly forcast in decision tree methods
+
+### Tree by rpart
+```{r rpart}
+#caret rpart
+model_tree1 <-train(classe~.,data=subtrain,method="rpart",tuneLength=20,trControl=trainControl(method="cv", number=10))
+fancyRpartPlot(model_tree1$finalModel)
+pred_tree1<-predict(model_tree1,newdata=validation,type="raw")
+confusionMatrix(pred_tree1,validation$classe)
+
+```
+### Bagging the tree
+* The accuracy of rpart is 0.77, what if bagging the tree?
+
+```{r treebag}
+model_tree2 <-train(classe~.,data=subtrain,method="treebag",tuneLength=20,trControl=trainControl(method="cv", number=10))
+pred_tree2<-predict(model_tree2,newdata=validation,type="raw")
+confusionMatrix(pred_tree2,validation$classe)
+
+```
+
+### Random forest
+* The accuracy of bagging the tree is increasing, what if bagging the tree as random forest?
+
+```{r random forest}
+model_rf <-train(classe~.,data=subtrain,method="rf",trControl=trainControl(method="cv", number=10))
+pred_rf<-predict(model_rf,newdata=validation,type="raw")
+confusionMatrix(pred_rf,validation$classe)
+# importance of each predictor
+importance(model_rf)
+```
+### Prediction of test set
+* Apply the best performance classifier (_modelrf_) into the test set
+```{r prediction}
+pred_test<-predict(model_rf,newdata=test_final,type="raw")
+print(pred_test)
+```
+
